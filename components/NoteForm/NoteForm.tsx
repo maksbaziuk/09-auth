@@ -4,7 +4,7 @@ import { useNoteStore } from '@/lib/store/noteStore';
 import css from './NoteForm.module.css';
 import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { CreateNote } from '@/lib/api';
+import { createNote } from '@/lib/api/clientApi';
 
 const NoteForm = () => {
   const queryClient = useQueryClient();
@@ -12,7 +12,7 @@ const NoteForm = () => {
   const { draft, setDraft, clearDraft } = useNoteStore();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: CreateNote,
+    mutationFn: createNote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
       toast.success('Note created successfully!');

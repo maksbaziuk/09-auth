@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { FetchNotes } from '@/lib/api';
+import { fetchNotes } from '@/lib/api/clientApi';
 import NoteList from '@/components/NoteList/NoteList';
 import SearchBox from '@/components/SearchBox/SearchBox';
 import { useDebouncedCallback } from 'use-debounce';
@@ -20,7 +20,7 @@ function NotesFilterClient({ tag }: NotesFilterPageProps) {
 
   const { data } = useQuery({
     queryKey: ['notes', search, page, 12, tag],
-    queryFn: () => FetchNotes({ search, page, perPage: 12, tag: tagForApi }),
+    queryFn: () => fetchNotes({ search, page, perPage: 12, tag: tagForApi }),
     placeholderData: keepPreviousData,
   });
 

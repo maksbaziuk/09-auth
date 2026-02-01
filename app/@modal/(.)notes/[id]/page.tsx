@@ -1,4 +1,4 @@
-import { FetchNotesById } from '@/lib/api';
+import { fetchNotesById } from '@/lib/api/serverApi';
 import {
   dehydrate,
   HydrationBoundary,
@@ -16,7 +16,7 @@ async function InterceptedNoteDetails({ params }: PropsId) {
 
   await queryClient.prefetchQuery({
     queryKey: ['note', id],
-    queryFn: () => FetchNotesById(id),
+    queryFn: () => fetchNotesById(id),
   });
 
   return (

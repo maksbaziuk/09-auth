@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import css from '@/components/Header/Header.module.css';
+import { AuthNavigation } from '@/components/AuthNavigation/AuthNavigation';
 
 function Header() {
   return (
@@ -17,6 +18,7 @@ function Header() {
           </li>
         </ul>
       </nav>
+      <AuthNavigation />
     </header>
   );
 }

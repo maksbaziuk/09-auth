@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { FetchNotes } from '@/lib/api';
+import { fetchNotes } from '@/lib/api/serverApi';
 import NotesFilterPage from './Notes.client';
 import {
   dehydrate,
@@ -24,7 +24,7 @@ export async function generateMetadata({
     description: `List of notes in category ${currentTag}`,
     openGraph: {
       title: `Notes: ${currentTag} | NoteHub`,
-      url: `https://08-zustand-lac-seven.vercel.app/notes/filter/${slug[0]}`,
+      url: `https://09-auth-three-topaz.vercel.app/notes/filter/${slug[0]}`,
       siteName: 'NoteHub',
       images: [
         {
@@ -46,7 +46,7 @@ async function FilterPage({ params }: PageProps) {
   await queryClient.prefetchQuery({
     queryKey: ['notes', '', 1, 12, currentTag],
     queryFn: () =>
-      FetchNotes({ search: '', page: 1, perPage: 12, tag: currentTag }),
+      fetchNotes({ search: '', page: 1, perPage: 12, tag: currentTag }),
   });
 
   return (
