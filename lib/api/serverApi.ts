@@ -34,9 +34,14 @@ export const fetchNotesById = async (id: string): Promise<Note> => {
   return data;
 };
 
-export const checkSession = async () => {
-  const { data } = await api.get<{ success: boolean }>('/auth/session');
-  return data.success;
+export const checkServerSession = async () => {
+  const cookieStore = await cookies();
+  const res = await api.get('/auth/session', {
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
+  });
+  return res;
 };
 
 export const getMeServer = async (): Promise<User> => {
