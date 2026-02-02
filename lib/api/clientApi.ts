@@ -16,7 +16,7 @@ export interface FetchNotesResponse {
 export interface RegisterRequest {
   email: string;
   password: string;
-  userName: string;
+  username: string;
 }
 
 export interface LoginRequest {
@@ -39,7 +39,7 @@ export const fetchNotes = async (
   return res.data;
 };
 
-export const fetchNotesById = async (id: string): Promise<Note> => {
+export const fetchNoteById = async (id: string): Promise<Note> => {
   const { data } = await api.get<Note>(`/notes/${id}`);
   return data;
 };
@@ -58,7 +58,7 @@ export const deleteNote = async (id: string): Promise<Note> => {
   return data;
 };
 
-export const register = async (payload: LoginRequest) => {
+export const register = async (payload: RegisterRequest) => {
   const { data } = await api.post<User>('/auth/register', payload);
   return data;
 };

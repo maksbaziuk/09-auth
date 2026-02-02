@@ -3,11 +3,8 @@
 import css from './SignUpPage.module.css';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-
 import { register } from '@/lib/api/clientApi';
-
 import { useAuthStore } from '@/lib/store/authStore';
-
 import { APIError } from '@/app/api/api';
 
 export default function SignUpPage() {
@@ -22,16 +19,18 @@ export default function SignUpPage() {
     const formData = new FormData(event.currentTarget);
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
+    const username = formData.get('username') as string;
 
     try {
-      const userData = await register({ email, password });
+      const userData = await register({ email, password, username });
       setUser(userData);
       router.push('/profile');
-    } catch (error) {
+    } catch (err) {
+      const apiError = err as APIError;
       setError(
-        (error as APIError).response?.data?.error ??
-          (error as APIError).message ??
-          'Registration failed. Please try again.'
+        apiError.response?.data?.error ||
+          apiError.message ||
+          'Registration failed'
       );
     }
   };
@@ -40,6 +39,17 @@ export default function SignUpPage() {
     <main className={css.mainContent}>
       <h1 className={css.formTitle}>Sign up</h1>
       <form onSubmit={handleSubmit} className={css.form}>
+        <div className={css.formGroup}>
+          <label htmlFor="username">Username</label>
+          <input
+            id="username"
+            type="text"
+            name="username"
+            className={css.input}
+            required
+          />
+        </div>
+
         <div className={css.formGroup}>
           <label htmlFor="email">Email</label>
           <input
@@ -68,7 +78,7 @@ export default function SignUpPage() {
           </button>
         </div>
 
-        <p className={css.error}>Error</p>
+        {error && <p className={css.error}>{error}</p>}
       </form>
     </main>
   );

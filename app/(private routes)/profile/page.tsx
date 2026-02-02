@@ -2,8 +2,12 @@ import css from './ProfilePage.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getMeServer } from '@/lib/api/serverApi';
+import type { Metadata } from 'next';
 
-export const metadata = { title: 'Profile | NoteHub' };
+export const metadata: Metadata = {
+  title: 'Profile | NoteHub',
+  description: 'Manage your NoteHub profile and personal information.',
+};
 
 export default async function ProfilePage() {
   const user = await getMeServer();
