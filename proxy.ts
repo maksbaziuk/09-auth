@@ -34,21 +34,25 @@ export async function proxy(request: NextRequest) {
 
         cookieArray.forEach(cookieStr => {
           const parsed = parse(cookieStr);
+          const entries = Object.entries(parsed);
 
-          const cookieEntries = Object.entries(parsed);
-          if (cookieEntries.length > 0) {
-            const [name, value] = cookieEntries[0];
+          if (entries.length > 0) {
+            const [name, value] = entries[0];
 
-            if (name && value) {
+            if (typeof name === 'string' && typeof value === 'string') {
               nextResponse.cookies.set(name, value, {
                 path: parsed.Path || '/',
                 maxAge: parsed['Max-Age']
                   ? Number(parsed['Max-Age'])
                   : undefined,
                 expires: parsed.Expires ? new Date(parsed.Expires) : undefined,
-                httpOnly: true,
-                secure: true,
-                sameSite: 'lax',
+                httpOnly: 'HttpOnly' in parsed,
+                secure: 'Secure' in parsed,
+                sameSite:
+                  (parsed.SameSite?.toLowerCase() as
+                    | 'lax'
+                    | 'strict'
+                    | 'none') || undefined,
               });
             }
           }
@@ -58,6 +62,10 @@ export async function proxy(request: NextRequest) {
       }
     } catch (error) {
       console.error('Refresh failed:', error);
+
+      if (isPrivateRoute) {
+        return NextResponse.redirect(new URL('/sign-in', request.url));
+      }
     }
   }
 

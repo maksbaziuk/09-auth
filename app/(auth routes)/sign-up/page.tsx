@@ -19,10 +19,9 @@ export default function SignUpPage() {
     const formData = new FormData(event.currentTarget);
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
-    const username = formData.get('username') as string;
 
     try {
-      const userData = await register({ email, password, username });
+      const userData = await register({ email, password });
       setUser(userData);
       router.push('/profile');
     } catch (err) {
@@ -39,17 +38,6 @@ export default function SignUpPage() {
     <main className={css.mainContent}>
       <h1 className={css.formTitle}>Sign up</h1>
       <form onSubmit={handleSubmit} className={css.form}>
-        <div className={css.formGroup}>
-          <label htmlFor="username">Username</label>
-          <input
-            id="username"
-            type="text"
-            name="username"
-            className={css.input}
-            required
-          />
-        </div>
-
         <div className={css.formGroup}>
           <label htmlFor="email">Email</label>
           <input
